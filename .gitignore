@@ -4,3 +4,6 @@
 *.jar
 *.war
 *.ear
+
+# Exception for the gradle wrapper #
+!gradle/wrapper/gradle-wrapper.jar
