@@ -1,0 +1,12 @@
+<VirtualHost 192.168.33.10:80>
+	ServerName unifyplatform.localhost
+
+	DocumentRoot /vagrant/vagrant-data/www
+
+	DirectoryIndex index.php
+
+	<Directory "/vagrant/vagrant-data/www">
+		AllowOverride All
+		Allow from All
+	</Directory>
+</VirtualHost>

@@ -1,9 +1,11 @@
+# Ignore all compiled and packaged files
 *.class
-
-# Package Files #
 *.jar
 *.war
 *.ear
 
-# Exception for the gradle wrapper #
-!gradle/wrapper/gradle-wrapper.jar
+# Ignore gradle cache directories
+.gradle
+
+# Exception for the gradle wrapper, needed for gradlew command #
+!*gradle-wrapper.jar

@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Require-Bundle: org.apache.cxf.bundle,org.apache.camel.camel-cxf,org.s
+ pringframework.beans,org.apache.camel.camel-core
+Export-Package: se.unify;version="0.0.0.unspecified";uses:="javax.ws.r
+ s,javax.ws.rs.core,javax.xml.bind.annotation,org.apache.camel.languag
+ e"
+Bundle-Version: 0.0.0.unspecified
+Tool: Bnd-2.1.0.20130426-122213
+Bundle-Name: unify1
+Bnd-LastModified: 1380992959000
+Created-By: 1.7.0_40 (Oracle Corporation)
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: unify1
+Import-Package: javax.ws.rs;version="[1.1,2)",javax.ws.rs.core;version
+ ="[1.1,2)",javax.xml.bind.annotation,org.apache.camel.language;versio
+ n="[2.10,3)",org.apache.commons.dbcp,javax.xml.transform,javax.xml.na
+ mespace
+

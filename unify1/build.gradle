@@ -1,9 +1,24 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.gradle.api.plugins:gradle-vagrant-plugin:0.2'
+    }
+}
+
+apply plugin: 'vagrant'
 apply plugin: 'osgi'
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
 wrapper {
 	gradleVersion = '1.8'
+}
+
+vagrant {
+    boxDir = file('../vagrant-data/boxes')
 }
 	
 jar {
@@ -38,3 +53,25 @@ dependencies {
 repositories {
     mavenCentral()
 }
+
+task devdeploy(type:Copy) {
+    from './build/libs'
+    into '../vagrant-data/servicemix_hotdeploy'
+}
+
+task cleanServer() {
+    it.dependsOn clean
+    it.dependsOn vagrantDestroy
+}
+
+task server() { 
+    it.dependsOn clean
+    it.dependsOn build
+    it.dependsOn vagrantUp
+    it.dependsOn devdeploy
+}
+
+// Rules for which order things must be run when combined.
+devdeploy.mustRunAfter vagrantUp
+vagrantUp.mustRunAfter build
+build.mustRunAfter clean
