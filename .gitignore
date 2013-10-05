@@ -11,6 +11,8 @@
 .project
 .settings
 
+# Ignore build-folder (this this too aggresive?)
+build/
 
 
 # Exception for the gradle wrapper, needed for gradlew command #

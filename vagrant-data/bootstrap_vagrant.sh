@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 add-apt-repository ppa:chris-lea/node.js
+sudo add-apt-repository ppa:cwchien/gradle
 apt-get update
 
 # Installerar java, behövs för servicemix
@@ -137,19 +138,22 @@ fi
 echo "* Installing node"
 if [ -z `which node` ];
 then
-  sudo apt-get install -y python-software-properties python g++ make
-  sudo apt-get install -y nodejs
+  apt-get install -y python-software-properties python g++ make
+  apt-get install -y nodejs
 fi
 
+##########
+# Gradle #
+##########
+echo "* Installing gradle"
+if [ -z `which gradle` ];
+then
+  apt-get install -y gradle
+fi
 
 #############################################################
 # Setup some aliases to simplify walking around in terminal #
 #############################################################
 echo "alias sql-test=\"mysql -u root -p${MYSQL_PASSWORD} -h localhost test\"" >> /home/vagrant/.bashrc
 echo "alias sm=\"${SERVICEMIX_CLIENT}\"" >> /home/vagrant/.bashrc
-
-
-
-
-
 
