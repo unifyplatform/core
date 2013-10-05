@@ -7,7 +7,7 @@ Export-Package: se.unify;version="0.0.0.unspecified";uses:="javax.ws.r
 Bundle-Version: 0.0.0.unspecified
 Tool: Bnd-2.1.0.20130426-122213
 Bundle-Name: unify1
-Bnd-LastModified: 1380992959000
+Bnd-LastModified: 1380994044000
 Created-By: 1.7.0_40 (Oracle Corporation)
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: unify1

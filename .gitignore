@@ -4,8 +4,11 @@
 *.war
 *.ear
 
-# Ignore gradle cache directories
+# Ignore cache/working directories
 .gradle
+.vagrant
+
+
 
 # Exception for the gradle wrapper, needed for gradlew command #
 !*gradle-wrapper.jar
