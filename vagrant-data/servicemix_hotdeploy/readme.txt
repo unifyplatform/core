@@ -1,0 +1,1 @@
+This folder will be mapped into the servicemix deploy-folder in the guest operating system.
