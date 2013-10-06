@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 add-apt-repository ppa:chris-lea/node.js
-sudo add-apt-repository ppa:cwchien/gradle
+add-apt-repository ppa:cwchien/gradle
 apt-get update
 
 # Installerar java, behövs för servicemix
@@ -37,6 +37,7 @@ sleep 10
 #########################################
 echo "* Installing feature: camel-jdbc"
 ${SERVICEMIX_CLIENT} "features:install camel-jdbc"
+${SERVICEMIX_CLIENT} "install -s mvn:mysql/mysql-connector-java/5.1.18"
 echo "* Installing osgi: commons-dbcp"
 COMMONS_DBCP_OUTPUT=$(${SERVICEMIX_CLIENT} "osgi:install -s mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-dbcp/1.4_3")
 
