@@ -37,7 +37,7 @@ public class DbServiceBean {
         sb.append("'").append("1").append("', ");
         sb.append("'").append(invoice.sum).append("') ");
 
-        System.out.println(" **** toSql returning: " + sb.toString());
+        System.out.println(" **** beanToSql returning: " + sb.toString());
 
         return sb.toString();
     }

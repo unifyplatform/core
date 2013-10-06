@@ -13,7 +13,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "invoice")
 public class Invoice implements Serializable {
     
-    @XmlAttribute(name = "id")
+    /**
+	 * Enabled a static unique ID for serialization
+	 */
+	private static final long serialVersionUID = -7780878522595583787L;
+
+	@XmlAttribute(name = "id")
     protected int id;
  
     @XmlElement(name = "date", required = true)
