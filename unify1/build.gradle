@@ -13,6 +13,22 @@ apply plugin: 'osgi'
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
+
+// Define integration tests
+
+sourceSets {
+	integrationTest {
+		java {
+			srcDir 'src/integrationtest/java'
+		}
+		resources {
+			srcDir 'src/integrationtest/resources'
+		}
+		// Add the actual runtimeClasspath to integration tests compile classpath
+		compileClasspath += sourceSets.main.runtimeClasspath
+	}
+}
+
 wrapper {
 	gradleVersion = '1.8'
 }
@@ -48,6 +64,9 @@ dependencies {
     compile "org.apache.cxf:cxf-rt-transports-http-jetty:${cxfVersion}"
 
     compile "commons-dbcp:commons-dbcp:1.2.2"
+    
+    testCompile 'junit:junit:4.10'
+    integrationTestCompile 'junit:junit:4.10'
 }
 
 repositories {
@@ -75,3 +94,39 @@ task server() {
 devdeploy.mustRunAfter vagrantUp
 vagrantUp.mustRunAfter build
 build.mustRunAfter clean
+
+
+// Added testing tasks
+// Ordinary unit tests - should always be run before signing off the jar file
+test {
+	// listen to events in the test execution lifecycle
+	beforeTest { descriptor ->
+		logger.lifecycle("Running " + descriptor)
+	}
+
+	// listen to standard out and standard error of the test JVM(s)
+	onOutput { descriptor, event ->
+    	logger.lifecycle("" + descriptor + " produced standard out/err: " + event.message )
+	}
+}
+
+
+// Integration tests - at the moment only run on demand
+// with ./gradle clean build (ngn deploy) integrationTest
+task integrationTest(type: Test) {
+	description = "Runs the integration tests"
+	testClassesDir = sourceSets.integrationTest.output.classesDir
+	classpath += sourceSets.integrationTest.runtimeClasspath
+	
+	// listen to events in the test execution lifecycle
+	beforeTest { descriptor ->
+		logger.lifecycle("Running integration " + descriptor)
+	}
+
+	// listen to standard out and standard error of the test JVM(s)
+	onOutput { descriptor, event ->
+    	logger.lifecycle("Integration " + descriptor + " produced standard out/err: " + event.message )
+	}
+}
+
+

@@ -32,3 +32,10 @@ File -> Import... -> Existing Projects into Workspace
 gradlew clean build
 cp build/libs/unify1.jar <servicemix>/deploy
 
+** Köra de vanliga testerna 
+gradlew clean compile test // går inte längre - test är inte unik längre
+gradlew clean build (omfattar ju såklart testfasen)
+
+** Köra integrationstesterna
+gradlew clean build integrationTest
+- denna borde utökas med lämplig deploy först

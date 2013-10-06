@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class IntegrationTestCaseBasic {
+public class FirstIntegrationTest {
 
 	@Before
 	public void setUp() {
@@ -24,7 +24,7 @@ public class IntegrationTestCaseBasic {
 	 * At the moment it is really stupid - and is only used to verify the gradle testing features (separating unit tests and integration tests)
 	 * 
 	 */
-	public void integrationTest() {
+	public void alwaysOKTest() {
 		// Slå upp informationen i routes.xml
 		// Använd samma i databasen - före och efter
 		assert true;

@@ -13,10 +13,10 @@ public class SecondApplicationTest {
 		sa = new SecondApplication();
 	}
 	
-	@Test
 	/**
 	 * Very stupid case - just here to enable different testing filtering from the gradle scripts
 	 */
+	@Test
 	public void testFromSQL() {
 		assertEquals("Processing from input", sa.fromSql());
 	}
