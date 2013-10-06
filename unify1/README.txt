@@ -13,6 +13,7 @@ CREATE TABLE INVOICE (id int, time_occurred date, status_code int, sum int);
 
 ** ServiceMix
 features:install camel-jdbc
+${SERVICEMIX_CLIENT} "install -s mvn:mysql/mysql-connector-java/5.1.18"
 osgi:install -s mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-dbcp/1.4_3
 
 Resultatet av ovanstående kommando är ett modul-id, byt från 190 till det id:t i kommandot nedan
