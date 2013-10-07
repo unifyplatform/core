@@ -95,7 +95,6 @@ devdeploy.mustRunAfter vagrantUp
 vagrantUp.mustRunAfter build
 build.mustRunAfter clean
 
-
 // Added testing tasks
 // Ordinary unit tests - should always be run before signing off the jar file
 test {
@@ -112,7 +111,7 @@ test {
 
 
 // Integration tests - at the moment only run on demand
-// with ./gradle clean build (ngn deploy) integrationTest
+// with ./gradle clean build (devdeploy) integrationTest
 task integrationTest(type: Test) {
 	description = "Runs the integration tests"
 	testClassesDir = sourceSets.integrationTest.output.classesDir
@@ -128,5 +127,15 @@ task integrationTest(type: Test) {
     	logger.lifecycle("Integration " + descriptor + " produced standard out/err: " + event.message )
 	}
 }
+
+// External integration test - run on all setup
+// Run with clean build devDeploy integrationTest
+// The host name is the same as in the vagrant-setup file ../vagrantFile
+task integrationTestExternal(type: JavaExec) {
+    main = 'se.unify.CXFClient'
+    classpath = sourceSets.integrationTest.output
+	args = ["http://192.168.33.10:9090/unify/invoices", "./build/resources/integrationTest/invoice.xml", "PUT"]
+}
+
 
 
