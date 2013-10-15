@@ -43,8 +43,6 @@ repositories {
 task devdeploy(type:Copy) {
     from './build/libs'
     into '../vagrant-data/servicemix_hotdeploy'
-
-    println 'Copying built lib to servicemix hotdeploy folder. Make sure dev env is runnung by issuing command "vagrant up"'
 }
 
 task cleanServer() {
