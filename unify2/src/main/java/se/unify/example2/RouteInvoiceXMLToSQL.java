@@ -8,7 +8,7 @@ import org.apache.camel.builder.RouteBuilder;
 public class RouteInvoiceXMLToSQL extends RouteBuilder {
   
 	// Verify this service by calling:
-	// curl -X PUT -H "Content-Type:application/xml" -d @invoice.xml 192.168.33.10:9090/api/invoices
+	// curl -X PUT -H "Content-Type:application/xml" -d @invoice.xml 192.168.33.10:9090/api/invoices2
 	// @invoice.xml is the xml-file in test/resources
 	
 	String cxfrsUrl = "http://0.0.0.0:9090/api?"

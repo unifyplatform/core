@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
 public interface IInvoiceService {
 
     @PUT
-    @Path("/invoices")
+    @Path("/invoices2")
     @Produces("application/xml")
     public Response newInvoice(String invoice);
         
