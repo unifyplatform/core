@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+                           http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd">
+	
+    <!-- Detta paket scannas, om klasser extendar RouteBuilder så används de upp som rutter -->
+    <camelContext xmlns="http://camel.apache.org/schema/spring">
+    	<package>se.unify.example2</package>
+    </camelContext>
+    
+    <!-- SQL Konfigurationen verkar inte gå att sätta från javan. -->
+    <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="myDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost/test"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123qwe"/>
+    </bean>
+    
+</beans>
