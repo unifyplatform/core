@@ -1,18 +1,9 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'org.gradle.api.plugins:gradle-vagrant-plugin:0.2'
-    }
-}
-
-apply plugin: 'vagrant'
 apply plugin: 'osgi'
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
+sourceCompatibility=1.6
+targetCompatibility=1.6
 
 // Define integration tests
 
@@ -31,10 +22,6 @@ sourceSets {
 
 wrapper {
 	gradleVersion = '1.8'
-}
-
-vagrant {
-    boxDir = file('../vagrant-data/boxes')
 }
 	
 jar {
@@ -80,19 +67,16 @@ task devdeploy(type:Copy) {
 
 task cleanServer() {
     it.dependsOn clean
-    it.dependsOn vagrantDestroy
 }
 
 task server() { 
     it.dependsOn clean
     it.dependsOn build
-    it.dependsOn vagrantUp
     it.dependsOn devdeploy
 }
 
 // Rules for which order things must be run when combined.
-devdeploy.mustRunAfter vagrantUp
-vagrantUp.mustRunAfter build
+devdeploy.mustRunAfter build
 build.mustRunAfter clean
 
 // Added testing tasks
