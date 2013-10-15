@@ -1,20 +1,23 @@
 #!/usr/bin/env bash
 
-add-apt-repository ppa:chris-lea/node.js
-add-apt-repository ppa:cwchien/gradle
-apt-get update
 
-# Installerar java, behövs för servicemix
-apt-get install -y openjdk-7-jre-headless
 
-# Set JAVA_HOME, both for this script. And for the vagrant user on login
-export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
-echo "export JAVA_HOME=${JAVA_HOME}" >> /home/vagrant/.bashrc
+apt-get update                                  # Get updated repo content
+apt-get install -y python-software-properties   # Install add-apt-repository (for Ubuntu <= 12.04)
+#apt-get install -y software-properties-common  # Install add-apt-repository (for ubuntu >= 12.10)
+add-apt-repository ppa:chris-lea/node.js        # Repo for Nodejs
+add-apt-repository ppa:cwchien/Gradle           # Repo for gradle
+apt-get update                                  # Refresh apt-get again after adding new repos
+
+apt-get install -y openjdk-7-jre-headless                     # Install java 7
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64            # Set JAVA_HOME, for this script.
+echo "export JAVA_HOME=${JAVA_HOME}" >> /home/vagrant/.bashrc # Set JAVA_HOME, for the vagrant user on login
 
 ###########################
 # ServiceMix installation #
 ###########################
 SERVICEMIX_VERSION="4.5.2"
+#SERVICEMIX_VERSION="5.0.0-SNAPSHOT"
 SERVICEMIX_FILE="apache-servicemix-${SERVICEMIX_VERSION}.tar.gz"
 SERVICEMIX_HOME="/home/vagrant/apache-servicemix-${SERVICEMIX_VERSION}"
 SERVICEMIX_CLIENT="${SERVICEMIX_HOME}/bin/client -a 8101 -h localhost -u smx -p smx"
@@ -27,16 +30,20 @@ wget "http://www.evitecunify.se/platform-downloads/${SERVICEMIX_FILE}"
 tar -xzvf ${SERVICEMIX_FILE}
 rm ${SERVICEMIX_FILE}
 # Start
-echo "* Start servicemix, and wait 10 seconds for it to start."
+echo "* Start servicemix."
 ${SERVICEMIX_HOME}/bin/start
-sleep 10
 
 
 #########################################
 # ServiceMix: install required features #
 #########################################
-echo "* Installing feature: camel-jdbc"
-${SERVICEMIX_CLIENT} "features:install camel-jdbc"
+echo "* Installing feature: camel-jdbc. Retrying until servicemix is up"
+until ${SERVICEMIX_CLIENT} "features:install camel-jdbc" # Repeating this command until it is successful
+do
+  echo "Trying again in 2 sec."
+  sleep 2
+done
+echo "EXECUTING: ${SERVICEMIX_CLIENT} features:install camel-jdbc"
 ${SERVICEMIX_CLIENT} "install -s mvn:mysql/mysql-connector-java/5.1.18"
 echo "* Installing osgi: commons-dbcp"
 COMMONS_DBCP_OUTPUT=$(${SERVICEMIX_CLIENT} "osgi:install -s mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-dbcp/1.4_3")
@@ -67,10 +74,10 @@ sleep 10
 
 # set vagrant user as owner of the servicemix folder
 echo "* Setting servicemix folder permission to vagrant user"
-chown -R vagrant apache-servicemix-4.5.2
+chown -R vagrant ${SERVICEMIX_HOME}
 
-echo "* Create symbolic link for '/home/vagrant/apache-servicemix-4.5.2/bin/KARAF-service' in '/etc/init.d/'"
-ln -fs /home/vagrant/apache-servicemix-4.5.2/bin/KARAF-service /etc/init.d/
+echo "* Create symbolic link for '/home/vagrant/apache-servicemix-XXXXXX/bin/KARAF-service' in '/etc/init.d/'"
+ln -fs ${SERVICEMIX_HOME}/bin/KARAF-service /etc/init.d/
 
 echo "* Register script to run on OS startup 'update-rc.d KARAF-service defaults'"
 update-rc.d KARAF-service defaults
@@ -139,7 +146,7 @@ fi
 echo "* Installing node"
 if [ -z `which node` ];
 then
-  apt-get install -y python-software-properties python g++ make
+  apt-get install -y python g++ make
   apt-get install -y nodejs
 fi
 
