@@ -1,0 +1,60 @@
+apply plugin: 'osgi'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility=1.6
+targetCompatibility=1.6
+
+wrapper {
+	gradleVersion = '1.8'
+}
+	
+jar {
+    manifest { 
+        // TODO: could a Require-Bundle instruction replace the 'feature install ...' in console?
+        instruction 'Require-Bundle', 'org.apache.cxf.bundle', 'org.apache.camel.camel-cxf', 'org.springframework.beans', 'org.apache.camel.camel-core'
+        instruction 'Import-Package', 'javax.xml.namespace', 'javax.xml.transform', 'org.apache.commons.dbcp', '*'
+    }
+}
+
+dependencies {
+    def camelVersion = "2.10.7"
+    def cxfVersion = "2.6.10"
+    def activeMqVersion = "5.7.0"
+
+    compile "org.apache.activemq:activemq-camel:${activeMqVersion}"
+    compile "org.apache.camel:camel-core:${camelVersion}"
+    compile "org.apache.camel:camel-spring:${camelVersion}"
+    compile "org.apache.camel:camel-cxf:${camelVersion}"
+    compile "org.apache.camel:camel-jms:${camelVersion}"
+    compile "org.apache.camel:camel-jdbc:${camelVersion}"
+    //compile "org.apache.camel:camel-mail:${camelVersion}"
+
+    compile "org.apache.cxf:cxf-rt-frontend-jaxrs:${cxfVersion}"
+    compile "org.apache.cxf:cxf-rt-transports-http:${cxfVersion}"
+    compile "org.apache.cxf:cxf-rt-transports-http-jetty:${cxfVersion}"
+    compile "commons-dbcp:commons-dbcp:1.2.2"
+}
+
+repositories {
+    mavenCentral()
+}
+
+task devdeploy(type:Copy) {
+    from './build/libs'
+    into '../vagrant-data/servicemix_hotdeploy'
+}
+
+task cleanServer() {
+    it.dependsOn clean
+}
+
+task server() { 
+    it.dependsOn clean
+    it.dependsOn build
+    it.dependsOn devdeploy
+}
+
+// Rules for which order tasks must be run.
+devdeploy.mustRunAfter build
+build.mustRunAfter clean
